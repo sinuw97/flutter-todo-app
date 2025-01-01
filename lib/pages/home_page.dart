@@ -1,7 +1,6 @@
-import 'dart:convert';
-
+import 'package:dhim_api/colors/app_colors.dart';
+import 'package:dhim_api/widgets/calender_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,49 +10,99 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<dynamic> users = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: const Center(
-          child: Text('RESTFul API')),
-          elevation: 50,
-      ),
-      body: ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index){
-         final user = users[index];
-         return ListTile(
-          leading: Text('${index + 1}'),
-          title: Text(user["name"]),
-          subtitle: Text(user["username"]),
-        );
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: fetchUsers,
-        backgroundColor: Colors.amber,
-        shape: CircleBorder(),
-        child: const Icon(Icons.add),
-      ),
+      body: ListView(
+        children: [
+          // Headers
+          Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 189,
+                decoration: const BoxDecoration(
+                  color: AppColors.desertSand,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.elliptical(50, 40)
+                  )
+                ),
+                child: Column(
+                  children: [
+                    // Header Text
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 10
+                      ),
+                      child: Text(
+                        "My Todo App",
+                        style: TextStyle(
+                          fontSize: 20
+                        ),
+                      ),
+                    ),
+                    // Welcome Text
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 29
+                      ),
+                      child: SizedBox(
+                        width: 319,
+                        height: 80,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Greetings & Date
+                            Container(
+                              width: 249,
+                              height: 120,
+                              child: const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Hello User !",
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.w700
+                                    ),
+                                  ),
+                                  Text(
+                                    "Monday, 1 Jan 2025",
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Image Profile
+                            Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 10, left: 20),
+                                  width: 50,
+                                  height: 50,
+                                  color: AppColors.whiteSmoke,
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          // Date Picker
+          Column(
+            children: [
+              CalendarAppBar()
+            ],
+          )
+        ],
+      )
     );
-  }
-
-  void fetchUsers() async{
-    print("Clicked");
-    // url endpoint
-    final url = Uri.parse('https://jsonplaceholder.typicode.com/users');
-    // await the http to fetch data
-    final response = await http.get(url);
-    // get the response body
-    final body = jsonDecode(response.body);
-    setState(() {
-      users = body;
-    });
-    print(users);
-    print(users.length);
-    print("Completed");
   }
 }
