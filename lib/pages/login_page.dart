@@ -1,9 +1,8 @@
-import 'package:dhim_api/navigation/bottom_navbar.dart';
+import 'package:dhim_api/pages/main_page.dart';
 import 'package:dhim_api/pages/home_page.dart';
 import 'package:dhim_api/pages/sigin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dhim_api/colors/app_colors.dart';
-import 'package:flutter/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,14 +19,16 @@ class _LoginPageState extends State<LoginPage> {
  @override
   void initState() {
     super.initState();
-
-    emailController.addListener(() => setState(() {}));
+    emailController.addListener(() => 
+     setState(() {
+      
+     }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.sage,
+      backgroundColor: AppColors.gray2,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: AppColors.walnutBrown,
+                color: AppColors.black,
               ),
             ),
             const SizedBox(height: 20),
@@ -47,11 +48,11 @@ class _LoginPageState extends State<LoginPage> {
               width: 310,
               height: 300,
               decoration: BoxDecoration(
-                color: AppColors.whiteSmoke,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.ashGrey.withOpacity(0.5), // Warna shadow
+                    color: AppColors.white.withOpacity(0.5), // Warna shadow
                     spreadRadius: 1, // Area penyebaran shadow
                     blurRadius: 10, // Kabur shadow
                     offset: Offset(4, 4), // Posisi shadow (x, y)
@@ -108,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 100,
+                            width: 90,
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
@@ -116,11 +117,11 @@ class _LoginPageState extends State<LoginPage> {
                                 print('Password: ${password}');
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const BottomNavbar())
+                                  MaterialPageRoute(builder: (context) => const MainPage())
                                 );
                               }, 
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.sage,
+                                backgroundColor: AppColors.gray3,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30), // Sudut melengkung
                                 ),
@@ -128,15 +129,15 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text(
                                 "Login",
                                 style: TextStyle(
-                                  color: AppColors.whiteSmoke,
-                                  fontWeight: FontWeight.bold
+                                  color: AppColors.black,
+                                  fontSize: 13
                                 ),
                               )
                             )
                           ),
                           const SizedBox(width: 30),
                           Container(
-                            width: 100,
+                            width: 90,
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () => {
@@ -145,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                                   MaterialPageRoute(builder: (context) => const SigninPage()))
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.buff,
+                                backgroundColor: AppColors.gray2,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                   // side: const BorderSide(
@@ -157,8 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text(
                                 "Sign in",
                                 style: TextStyle(
-                                  color: AppColors.whiteSmoke,
-                                  fontWeight: FontWeight.bold
+                                  color: AppColors.white,
+                                  fontSize: 13
                                 ),
                               )
                             )
@@ -181,23 +182,23 @@ class _LoginPageState extends State<LoginPage> {
     // ignore: prefer_const_constructors
     controller: emailController,
     style: const TextStyle(
-        color: AppColors.resedaGreen,
-        fontWeight: FontWeight.w600
+      color: AppColors.black,
+      fontWeight: FontWeight.w600
     ),
     decoration: InputDecoration(
       hintText: "Enter Your Email",
       labelText: "Email",
       labelStyle: const TextStyle(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       prefixIcon: const Icon(
         Icons.email,
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       suffixIcon: emailController.text.isEmpty
         ? Container(width: 0)
         : IconButton(
-          color: AppColors.resedaGreen,
+          color: AppColors.black,
           icon: const Icon(Icons.close),
           onPressed: () => emailController.clear(),
         ),
@@ -208,20 +209,20 @@ class _LoginPageState extends State<LoginPage> {
       // ignore: prefer_const_constructors
       border: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColors.resedaGreen,
-          width: 2.0
+          color: AppColors.black,
+          width: 1.3
         )
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen,  // Warna border saat focus
-          width: 2.0,
+          color: AppColors.black,  // Warna border saat focus
+          width: 1.3,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen.withOpacity(0.6),  // Warna border saat dalam keadaan normal
-          width: 2.0,
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          width: 1.3,
         ),
       ),
     ),
@@ -234,17 +235,17 @@ class _LoginPageState extends State<LoginPage> {
     onSubmitted: (value) => setState(() => this.password = value),
 
     style: const TextStyle(
-      color: AppColors.resedaGreen,
+      color: AppColors.black,
       fontWeight: FontWeight.w600
     ),
     decoration: InputDecoration(
       hintText: "Enter Your Password",
       labelText: "Password",
       labelStyle: const TextStyle(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       suffixIcon: IconButton(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
         icon: isPasswordVisible 
           ? Icon(Icons.visibility_off)
           : Icon(Icons.visibility), 
@@ -257,20 +258,20 @@ class _LoginPageState extends State<LoginPage> {
       // ignore: prefer_const_constructors
       border: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColors.resedaGreen,
-          width: 2.0
+          color: AppColors.black,
+          width: 1.3
         )
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen,  // Warna border saat focus
-          width: 2.0,
+          color: AppColors.black,  // Warna border saat focus
+          width: 1.3,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen.withOpacity(0.6),  // Warna border saat dalam keadaan normal
-          width: 2.0,
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          width: 1.3,
         ),
       ),
     ),

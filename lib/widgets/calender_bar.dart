@@ -67,52 +67,55 @@ class _CalendarAppBarState extends State<CalendarAppBar> {
             itemCount: weekDays.length,
             itemBuilder: (context, index) {
               DateTime day = weekDays[index];
-              return GestureDetector(
-                onTap: (){
-                  setState(() {
-                    selectedDate = day;
-                  });
-                },
-                child: Container(
-                  width: 60,
-                  height: 50,
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  padding: EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                    color: selectedDate == day
-                      ? AppColors.sage
-                      : (currentDate.weekday == day.weekday
-                        ? AppColors.desertSand
-                        : AppColors.whiteSmoke),
-                    borderRadius: BorderRadius.circular(8),
+              return Container(
+                color: AppColors.gray8,
+                child: GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      selectedDate = day;
+                    });
+                  },
+                  child: Container(
+                    width: 60,
+                    height: 50,
+                    margin: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.all(9),
+                    decoration: BoxDecoration(
+                      color: selectedDate == day
+                        ? AppColors.gray3
+                        : (currentDate.weekday == day.weekday
+                          ? AppColors.gray4
+                          : AppColors.gray8),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Hari
+                        Text(
+                          DateFormat('E').format(day),
+                          style: TextStyle(
+                            fontSize: 11
+                          ),
+                        ),
+                        // Tangal
+                        Text(
+                          DateFormat('d').format(day),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
+                        Text(
+                          DateFormat('MMM').format(day),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ],
+                    )
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Hari
-                      Text(
-                        DateFormat('E').format(day),
-                        style: TextStyle(
-                          fontSize: 11
-                        ),
-                      ),
-                      // Tangal
-                      Text(
-                        DateFormat('d').format(day),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600
-                        ),
-                      ),
-                      Text(
-                        DateFormat('MMM').format(day),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600
-                        ),
-                      ),
-                    ],
-                  )
                 ),
               );
             },
