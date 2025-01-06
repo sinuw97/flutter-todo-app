@@ -1,6 +1,7 @@
 import 'package:dhim_api/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:dhim_api/colors/app_colors.dart';
+import 'package:intl/intl.dart';
 
 class AddTodoPage extends StatefulWidget {
   const AddTodoPage({super.key});
@@ -10,6 +11,77 @@ class AddTodoPage extends StatefulWidget {
 }
 
 class _AddTodoPageState extends State<AddTodoPage> {
+
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _startTimeController = TextEditingController();
+  TextEditingController _endTimeController = TextEditingController();
+
+  TimeOfDay _time = TimeOfDay.now();
+  TimeOfDay? startTime, endTime;
+
+  // func untuk select time
+  Future<Null> selectStartTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _time,
+    );
+    if (pickedTime != null) {
+      setState(() {
+        startTime = pickedTime;
+        final formattedHour = startTime?.hour.toString().padLeft(2, '0');
+        final formattedMinute = startTime?.minute.toString().padLeft(2, '0');
+        _startTimeController.text = "${formattedHour}:${formattedMinute}";
+        print("Start Time: ${_startTimeController.text}");
+        print("Start Time variable: ${startTime}");
+      });
+    }
+  }
+
+  // func untuk simpan ke database
+  void _saveTask() {
+    String title = _titleController.text;
+    String description = _descriptionController.text;
+    String dateTime = _dateController.text;
+    String startTime = _startTimeController.text;
+    String endTime = _endTimeController.text;
+
+    print(title);
+    print(description);
+    print(dateTime);
+    print(startTime);
+    print(endTime);
+
+    _titleController.clear();
+    _descriptionController.clear();
+    _dateController.clear();
+    _startTimeController.clear();
+    _endTimeController.clear();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Task berhasil dibuat!')),
+    );
+  }
+
+  // func untuk select time
+  Future<Null> selectEndTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _time,
+    );
+    if (pickedTime != null) {
+      setState(() {
+        endTime = pickedTime;
+        final formattedHour = endTime?.hour.toString().padLeft(2, '0');
+        final formattedMinute = endTime?.minute.toString().padLeft(2, '0');
+        _endTimeController.text = "${formattedHour}:${formattedMinute}";
+        print("End Time: ${_startTimeController.text}");
+        print("End Time variable: ${endTime}");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,16 +126,44 @@ class _AddTodoPageState extends State<AddTodoPage> {
               SizedBox(height: 5),
               buildDateField(),
               SizedBox(height: 5),
-              // start time
-              Text(
-                "Start Time",
-                style: TextStyle(
-                  fontSize: 18.5,
-                  fontWeight: FontWeight.w700
-                ),
+              // Time sections
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Start time
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Start Time",
+                        style: TextStyle(
+                          fontSize: 18.5,
+                          fontWeight: FontWeight.w700
+                        ),
+                      ),
+                      SizedBox(
+                        width: 130,
+                        child: buildStartTimeField()),
+                    ],
+                  ),
+                  // End time
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "End Time",
+                        style: TextStyle(
+                          fontSize: 18.5,
+                          fontWeight: FontWeight.w700
+                        ),
+                      ),
+                      SizedBox(
+                        width: 130,
+                        child: buildEndTimeField()),
+                    ],
+                  )
+                ],
               ),
-              SizedBox(height: 5),
-              buildStartTimeField(),
               SizedBox(height: 5),
               // descriptions
               Text(
@@ -87,7 +187,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     child: ElevatedButton(
                       onPressed: () => {
                         Navigator.push(
-                          context, 
+                          context,
                           MaterialPageRoute(builder: (context) => const MainPage() ))
                         },
                       style: ElevatedButton.styleFrom(
@@ -112,8 +212,9 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     height: 30,
                     child: ElevatedButton(
                       onPressed: () => {
+                        _saveTask(),
                         Navigator.push(
-                          context, 
+                          context,
                           MaterialPageRoute(builder: (context) => const MainPage() ))
                         },
                       style: ElevatedButton.styleFrom(
@@ -141,17 +242,27 @@ class _AddTodoPageState extends State<AddTodoPage> {
     );
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _dateController.dispose();
+    _startTimeController.dispose();
+    _endTimeController.dispose();
+    super.dispose();
+  }
+
   // widget title
   Widget buildTitleField() => TextField(
-    //controller: emailController,
+    controller: _titleController,
     style: const TextStyle(
-      color: AppColors.resedaGreen,
+      color: AppColors.black,
       fontWeight: FontWeight.w600
     ),
     decoration: InputDecoration(
       hintText: "Your task title",
       labelStyle: const TextStyle(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       contentPadding: const EdgeInsets.only(
         top: 3,
@@ -160,19 +271,19 @@ class _AddTodoPageState extends State<AddTodoPage> {
       // ignore: prefer_const_constructors
       border: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColors.resedaGreen,
+          color: AppColors.black,
           width: 2.0
         )
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen,  // Warna border saat focus
+          color: AppColors.black,  // Warna border saat focus
           width: 2.0,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
           width: 2.0,
         ),
       ),
@@ -182,53 +293,73 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   // widget date & time
   Widget buildDateField() => TextField(
-    //controller: emailController,
+    controller: _dateController,
+    readOnly: true,
     style: const TextStyle(
-      color: AppColors.resedaGreen,
+      color: AppColors.black,
       fontWeight: FontWeight.w600
     ),
     decoration: InputDecoration(
-      hintText: "Date & Time",
+      hintText: "Select Date",
       labelStyle: const TextStyle(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       contentPadding: const EdgeInsets.only(
         top: 3,
         left: 10
       ),
+      suffixIcon: Icon(Icons.calendar_month_rounded),
       // ignore: prefer_const_constructors
       border: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColors.resedaGreen,
+          color: AppColors.black,
           width: 2.0
         )
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen,  // Warna border saat focus
+          color: AppColors.black,  // Warna border saat focus
           width: 2.0,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
           width: 2.0,
         ),
       ),
     ),
+    onTap: () async {
+      final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1999),
+        lastDate: DateTime(2100),
+      );
+      // cek
+      if(pickedDate != null) {
+        // simpan kedalam state _date
+        setState(() {
+          _dateController.text = pickedDate.toLocal().toString().split(" ")[0];
+        });
+      }
+    },
     textInputAction: TextInputAction.done,
   );
 
   // widget start time
   Widget buildStartTimeField() => TextField(
+    controller: _startTimeController,
+    readOnly: true,
     style: const TextStyle(
-      color: AppColors.resedaGreen,
+      color: AppColors.black,
       fontWeight: FontWeight.w600
     ),
     decoration: InputDecoration(
       hintText: "00:00",
+      suffixIcon: Icon(Icons.keyboard_arrow_down),
       labelStyle: const TextStyle(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       contentPadding: const EdgeInsets.only(
         top: 3,
@@ -236,36 +367,81 @@ class _AddTodoPageState extends State<AddTodoPage> {
       ),
       border: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColors.resedaGreen,
+          color: AppColors.black,
           width: 2.0
         )
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen,  // Warna border saat focus
+          color: AppColors.black,  // Warna border saat focus
           width: 2.0,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
           width: 2.0,
         ),
       ),
     ),
+    onTap: (){
+      selectStartTime(context);
+    },
+  );
+
+  Widget buildEndTimeField() => TextField(
+    controller: _endTimeController,
+    readOnly: true,
+    style: const TextStyle(
+      color: AppColors.black,
+      fontWeight: FontWeight.w600
+    ),
+    decoration: InputDecoration(
+      hintText: "00:00",
+      suffixIcon: Icon(Icons.keyboard_arrow_down),
+      labelStyle: const TextStyle(
+        color: AppColors.black,
+      ),
+      contentPadding: const EdgeInsets.only(
+        top: 3,
+        left: 10
+      ),
+      border: OutlineInputBorder(
+        borderSide: const BorderSide(
+          color: AppColors.black,
+          width: 2.0
+        )
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.black,  // Warna border saat focus
+          width: 2.0,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          width: 2.0,
+        ),
+      ),
+    ),
+    onTap: (){
+      selectEndTime(context);
+    },
   );
 
   // widget descriptions
   Widget buildDescriptionField() => TextFormField(
+    controller: _descriptionController,
     maxLines: 5,
     style: const TextStyle(
-      color: AppColors.resedaGreen,
+      color: AppColors.black,
       fontWeight: FontWeight.w600
     ),
     decoration: InputDecoration(
       hintText: "Your task description goes here",
       labelStyle: const TextStyle(
-        color: AppColors.resedaGreen,
+        color: AppColors.black,
       ),
       contentPadding: const EdgeInsets.only(
         top: 9,
@@ -273,22 +449,23 @@ class _AddTodoPageState extends State<AddTodoPage> {
       ),
       border: OutlineInputBorder(
         borderSide: const BorderSide(
-          color: AppColors.resedaGreen,
+          color: AppColors.black,
           width: 2.0
         )
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen,  // Warna border saat focus
+          color: AppColors.black,  // Warna border saat focus
           width: 2.0,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: AppColors.resedaGreen.withOpacity(0.6),  // Warna border saat dalam keadaan normal
+          color: AppColors.black.withOpacity(0.6),  // Warna border saat dalam keadaan normal
           width: 2.0,
         ),
       ),
     ),
   );
+
 }

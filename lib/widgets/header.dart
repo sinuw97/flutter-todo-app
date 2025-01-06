@@ -17,22 +17,10 @@ class HomeHeader extends StatelessWidget {
       ),
       child: Column(
         children: [
-        // Header Text
-          const Padding(
-            padding: EdgeInsets.only(
-              top: 10
-            ),
-            child: Text(
-              "My Todo App",
-              style: TextStyle(
-                fontSize: 20
-              ),
-            ),
-          ),
            // Welcome Text
           Padding(
             padding: const EdgeInsets.only(
-              top: 29
+              top: 70
             ),
             child: SizedBox(
               width: 319,

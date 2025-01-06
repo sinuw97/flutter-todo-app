@@ -1,6 +1,5 @@
 import 'package:dhim_api/colors/app_colors.dart';
 import 'package:dhim_api/widgets/calender_bar.dart';
-import 'package:dhim_api/widgets/today_task.dart';
 import 'package:flutter/material.dart';
 import 'package:dhim_api/widgets/header.dart';
 
@@ -67,11 +66,11 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Today's Task",
+                        "Today's task",
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
-                        "See All",
+                        "Completed",
                         style: TextStyle(fontSize: 12),
                       ),
                     ],

@@ -1,7 +1,8 @@
 import 'package:dhim_api/colors/app_colors.dart';
-import 'package:dhim_api/pages/todo_page.dart';
+import 'todo_page.dart';
 import 'package:flutter/material.dart';
-import 'package:dhim_api/pages/home_page.dart';
+import 'home_page.dart';
+import 'profile_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -59,18 +60,6 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Profile Screen',
-        style: TextStyle(fontSize: 24),
-      ),
     );
   }
 }
